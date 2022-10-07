@@ -15,9 +15,9 @@ function solve1(input) {
   return input;
 }
 
-// function solve2(input) {
-//   return input;
-// }
+function solve2(input) {
+  return input;
+}
 
 const input = parseInput(inputText);
 
