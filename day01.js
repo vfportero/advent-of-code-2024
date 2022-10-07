@@ -3,7 +3,7 @@ console.time('✨ Done in');
 console.log('--- Day01 ---');
 
 const inputText = readFileSync('./inputs/day01.txt', {encoding:'utf8'});
-// const inputText = ` // test input
+// const inputText = `
 // 199
 // 200
 // 208
@@ -14,7 +14,7 @@ const inputText = readFileSync('./inputs/day01.txt', {encoding:'utf8'});
 // 269
 // 260
 // 263
-// `;
+// `; // test input
 
 function parseInput(inputText) {
   return inputText.trim()
@@ -28,13 +28,16 @@ function solve1(measures) {
 		.length;
 }
 
-function solve2(input) {
-  return input;
+function solve2(measures) {
+  return measures
+		.map((measure, i) => measure + measures[i-1] + measures[i-2])
+		.filter((window, i, windows) => window > windows[i - 1])
+		.length;
 }
 
 const input = parseInput(inputText);
 const solution1 = solve1(input);
 console.log('solution 1:', solution1);
-// const solution2 = solve2(input);
-// console.log('solution 2:', solution2);
+const solution2 = solve2(input);
+console.log('solution 2:', solution2);
 console.timeEnd('✨ Done in');
