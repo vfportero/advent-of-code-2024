@@ -8,6 +8,7 @@
     "watch": "onchange -i -k -d 1000 '**/*.js' -- node",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rubnvp/advent-of-code-2021.git"
