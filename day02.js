@@ -22,13 +22,17 @@ function parseInput(inputText) {
 }
 
 function solve1(instructions) {
-  return instructions
-    .reduce(([horizontal, depth], {direction, value}) => {
-      if (direction === 'forward') return [horizontal + value, depth];
-      const factor = direction === 'down' ? 1 : -1;
-      return [horizontal, depth +  value * factor];
-    }, [0, 0])
-    .reduce((mult, num) => mult * num);
+  let horizontal = 0;
+  let depth = 0;
+  instructions
+    .forEach(({direction, value}) => {
+      if (direction === 'forward') horizontal += value;
+      else {
+        const factor = direction === 'down' ? 1 : -1;
+        return depth += factor * value;
+      }
+    })
+  return horizontal * depth;
 }
 
 // function solve2(input) {
