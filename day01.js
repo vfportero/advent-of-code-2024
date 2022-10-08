@@ -36,8 +36,8 @@ function solve2(measures) {
 }
 
 const input = parseInput(inputText);
-const solution1 = solve1(input);
+const solution1 = solve1(input); // Solution 1
 console.log('solution 1:', solution1);
-const solution2 = solve2(input);
+const solution2 = solve2(input); // Solution 2
 console.log('solution 2:', solution2);
 console.timeEnd('✨ Done in');
