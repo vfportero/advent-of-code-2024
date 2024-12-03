@@ -1,55 +1,68 @@
 import { readFileSync } from 'fs';
 console.time('✨ Done in');
-console.log('--- Day02 ---');
+console.log("--- DayXX ---");
 
-const inputText = readFileSync('./inputs/day02.txt', {encoding:'utf8'});
-// const inputText = `
-// forward 5
-// down 5
-// forward 8
-// up 3
-// down 8
-// forward 2
-// `; // test input
+const inputText = readFileSync("./inputs/day02.txt", { encoding: "utf8" });
 
 function parseInput(inputText) {
-  return inputText.trim()
-    .split('\n')
-    .map(line => {
-      const [direction, value] = line.split(' ');
-      return {direction, value: parseInt(value)};
-    });
+  return inputText.split("\n").map((line) => {
+    return line.split(" ").map((item) => parseInt(item));
+  });
 }
 
-function solve1(instructions) {
-  let horizontal = 0;
-  let depth = 0;
-  instructions
-    .forEach(({direction, value}) => {
-      if (direction === 'forward') horizontal += value;
-      else {
-        const factor = direction === 'down' ? 1 : -1;
-        depth += factor * value;
+function isReportSafe(report, activeProblemDampener = false) {
+  // A report is an array of levels
+  // A report is safe when:
+  // The levels are either all increasing or all decreasing.
+  // Any two adjacent levels differ by at least one and at most three.
+
+  // if activeProblemDampener is true, we can tolerate a single bad level
+
+  const isSafe = isReportSafeInternal(report);
+
+  if (!isSafe) {
+    if (activeProblemDampener) {
+      // Try to fix the report by removing a single level
+      for (let i = 0; i < report.length; i++) {
+        const newReport = [...report];
+        newReport.splice(i, 1);
+        if (isReportSafeInternal(newReport)) {
+          return true;
+        }
       }
-    });
-  return horizontal * depth;
+    }
+    return false;
+  }
+  return true;
 }
 
-function solve2(instructions) {
-  let horizontal = 0;
-  let depth = 0;
-  let aim = 0;
-  instructions
-    .forEach(({direction, value}) => {
-      if (direction === 'down') aim += value;
-      if (direction === 'up') aim -= value;
-      if (direction === 'forward') {
-        horizontal += value;
-        depth += aim * value;
-      }
-    });
-  return horizontal * depth;
+function isReportSafeInternal(report) {
+  let direction = 0; // 0: unknown, 1: increasing, -1: decreasing
+  return report.every((level, index, arr) => {
+    if (index === 0) return true;
+
+    let distance = level - arr[index - 1];
+    let currentDirection = distance > 0 ? 1 : -1;
+
+    if (direction === 0) {
+      direction = currentDirection;
+    } else if (direction !== currentDirection) {
+      return false;
+    }
+
+    const diff = Math.abs(level - arr[index - 1]);
+    return diff >= 1 && diff <= 3;
+  });
 }
+
+function solve1(input) {
+  return input.filter((i) => isReportSafe(i, false)).length;
+}
+
+function solve2(input) {
+  return input.filter((i) => isReportSafe(i, true)).length;
+}
+
 
 const input = parseInput(inputText);
 const solution1 = solve1(input); // Solution 1
